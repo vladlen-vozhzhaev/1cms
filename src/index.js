@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {getResponse} from "./state";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App getResponse={getResponse}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
