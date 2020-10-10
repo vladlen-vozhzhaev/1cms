@@ -11,11 +11,22 @@ const CodeEditor = ()=>{
     let code_html;
     let code_css;
     let code_js;
+
     function handleSave(e){
-        console.log("html:", code_html);
+        /*console.log("html:", code_html);
         console.log("css:", code_css);
-        console.log("js:", code_js);
+        console.log("js:", code_js);*/
+        let formData = new FormData();
+        formData.append("html",code_html);
+        formData.append("css",code_css);
+        formData.append("js",code_js);
+        let response = fetch("http://1.vozhzhaev.ru/addPage",{
+           method:"POST",
+           body:formData
+        });
+        console.log(response);
     }
+
     function onChange(value) {
         if (this.name === "HTML_EDITOR"){
             code_html = value;
@@ -25,6 +36,7 @@ const CodeEditor = ()=>{
             code_js = value;
         }
     }
+
     return <div className="w-100">
         <ul className="nav nav-pills" id="pills-tab" role="tablist">
             <li className="nav-item" role="presentation">

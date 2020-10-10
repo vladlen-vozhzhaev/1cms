@@ -3,9 +3,8 @@ import './App.css';
 import Menu from "./components/Menu";
 import {BrowserRouter,Route} from "react-router-dom";
 import Pages from "./pages/Pages";
-
-
 import CodeEditor from "./components/CodeEditor";
+
 function App(){
     return (
         <div className="row">
