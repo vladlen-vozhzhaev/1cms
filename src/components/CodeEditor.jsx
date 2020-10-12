@@ -24,7 +24,6 @@ const CodeEditor = ()=>{
            method:"POST",
            body:formData
         });
-        console.log(response);
     }
 
     function onChange(value) {
