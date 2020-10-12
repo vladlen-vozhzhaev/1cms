@@ -4,6 +4,7 @@ import Menu from "./components/Menu";
 import {BrowserRouter,Route} from "react-router-dom";
 import Pages from "./pages/Pages";
 import CodeEditor from "./components/CodeEditor";
+import EditPage from "./pages/EditPage";
 
 function App(){
     return (
@@ -14,7 +15,7 @@ function App(){
                     <Route exact path="/" render={()=>"Hello world"}/>
                     <Route exact path="/pages/" render={()=><Pages/>}/>
                     <Route path="/pages/addPage" render={()=><CodeEditor/>}/>
-                    <Route path="/pages/editPage" render={()=><CodeEditor/>}/>
+                    <Route path="/pages/editPage" render={()=><EditPage/>}/>
                 </div>
            </BrowserRouter>
         </div>

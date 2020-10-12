@@ -21,6 +21,7 @@ class Pages extends React.Component{
     componentDidMount() {
 
         fetch("http://1.vozhzhaev.ru/getPagesJSON")
+        //fetch("http://dsergeev.beget.tech/getPagesJSON")
             .then(response => response.json())
             .then(result => {
                 let pages = result.map(
@@ -41,9 +42,6 @@ class Pages extends React.Component{
                 <li className="nav-item">
                     <NavLink className="nav-link btn btn-primary" to="addPage">Добавить страницу</NavLink>
                 </li>
-                <li className="nav-item">
-                    <NavLink className="nav-link" to="editPage">Изменить страницу</NavLink>
-                </li>
             </ul>
             <table className="table">
                 <thead className="thead-dark">
@@ -55,7 +53,7 @@ class Pages extends React.Component{
                 </tr>
                 </thead>
                 <tbody>
-                    {this.state.pages}
+                {this.state.pages}
                 </tbody>
             </table>
         </div>
