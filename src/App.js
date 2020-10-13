@@ -8,16 +8,18 @@ import EditPage from "./pages/EditPage";
 
 function App(){
     return (
-        <div className="row">
-           <BrowserRouter>
-                <Menu/>
-                <div className="col-9">
-                    <Route exact path="/" render={()=>"Hello world"}/>
-                    <Route exact path="/pages/" render={()=><Pages/>}/>
-                    <Route path="/pages/addPage" render={()=><CodeEditor/>}/>
-                    <Route path="/pages/editPage" render={()=><EditPage/>}/>
-                </div>
-           </BrowserRouter>
+        <div className="container-fluid">
+            <div className="row">
+               <BrowserRouter>
+                    <Menu/>
+                    <div className="col-sm-9">
+                        <Route exact path="/" render={()=>"Hello world"}/>
+                        <Route exact path="/pages/" render={()=><Pages/>}/>
+                        <Route path="/pages/addPage" render={()=><CodeEditor/>}/>
+                        <Route path="/pages/editPage" render={()=><EditPage/>}/>
+                    </div>
+               </BrowserRouter>
+            </div>
         </div>
     );
 }

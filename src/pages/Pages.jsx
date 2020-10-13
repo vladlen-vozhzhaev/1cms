@@ -5,7 +5,7 @@ const Tr = (props)=>{
     return <tr>
         <th scope="row">{props.index}</th>
         <td>{props.title}</td>
-        <td>{props.name}</td>
+        <td>/{props.name}</td>
         <td><NavLink to={"editPage/"+props.name}>[Редактировать]</NavLink></td>
     </tr>
 }
@@ -21,13 +21,10 @@ class Pages extends React.Component{
     componentDidMount() {
 
         fetch("http://1.vozhzhaev.ru/getPagesJSON")
-        //fetch("http://dsergeev.beget.tech/getPagesJSON")
-            .then(response => response.json())
-            .then(result => {
+            .then(response=>response.json())
+            .then(result=>{
                 let pages = result.map(
-                    (page,index)=><Tr index={index+1} title={page.title} name={page.name}/>
-
-
+                    (page,index)=><Tr key={index} index={index+1} title={page.title} name={page.name}/>
                 );
                 this.setState({
                     pages: pages
@@ -48,7 +45,7 @@ class Pages extends React.Component{
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Заголовок</th>
-                    <th scope="col">Name</th>
+                    <th scope="col">Адрес</th>
                     <th scope="col">Управление</th>
                 </tr>
                 </thead>
