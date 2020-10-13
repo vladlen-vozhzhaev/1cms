@@ -15,6 +15,11 @@ class EditPage extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            valueHTML: "HTML",
+            valueCSS: "CSS",
+            valueJS: "JS"
+        }
     }
 
     render() {
@@ -47,6 +52,7 @@ class EditPage extends React.Component {
             }
         }
 
+
         return <div className="w-100">
             <ul className="nav nav-pills" id="pills-tab" role="tablist">
                 <li className="nav-item" role="presentation">
@@ -71,6 +77,7 @@ class EditPage extends React.Component {
                         theme="vibrant_ink"
                         width="100%"
                         onChange={onChange}
+                        value={this.state.valueHTML}
                         name="HTML_EDITOR"
                         setOptions={{
                             enableEmmet: true,
@@ -85,6 +92,7 @@ class EditPage extends React.Component {
                         width="100%"
                         name="CSS_EDITOR"
                         onChange={onChange}
+                        value={this.state.valueCSS}
                         setOptions={{
                             fontSize: 20,
 
@@ -96,6 +104,7 @@ class EditPage extends React.Component {
                         theme="vibrant_ink"
                         width="100%"
                         onChange={onChange}
+                        value={this.state.valueJS}
                         name="JS_EDITOR"
                         setOptions={{
                             fontSize: 20,
@@ -123,6 +132,11 @@ class EditPage extends React.Component {
                 console.log("HTML: " + res.html);
                 console.log("CSS: " + res.css);
                 console.log("JavaScript: " + res.js);
+                this.setState({
+                    valueHTML: res.html,
+                    valueCSS: res.css,
+                    valueJS: res.js
+                });
             });
     }
 }
