@@ -6,6 +6,9 @@ import Pages from "./pages/Pages";
 import CodeEditor from "./components/CodeEditor";
 import EditPage from "./pages/EditPage";
 
+//let host = "http://dsergeev.beget.tech";
+let host = "http://1.vozhzhaev.ru";
+
 function App(){
     return (
         <div className="container-fluid">
@@ -15,7 +18,7 @@ function App(){
                     <div className="col-sm-9">
                         <Route exact path="/" render={()=>"Hello world"}/>
                         <Route exact path="/pages/" render={()=><Pages/>}/>
-                        <Route path="/pages/addPage" render={()=><CodeEditor/>}/>
+                        <Route path="/pages/addPage" render={()=><CodeEditor url={host+"/addPage"}/>}/>
                         <Route path="/pages/editPage" render={()=><EditPage/>}/>
                     </div>
                </BrowserRouter>

@@ -1,6 +1,9 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
+//let host = "http://dsergeev.beget.tech";
+let host = "http://1.vozhzhaev.ru";
+
 const Tr = (props)=>{
     return <tr>
         <th scope="row">{props.index}</th>
@@ -20,7 +23,7 @@ class Pages extends React.Component{
 
     componentDidMount() {
 
-        fetch("http://1.vozhzhaev.ru/getPagesJSON")
+        fetch(host+"/getPagesJSON")
             .then(response=>response.json())
             .then(result=>{
                 let pages = result.map(
