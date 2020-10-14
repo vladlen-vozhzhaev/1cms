@@ -13,6 +13,8 @@ class CodeEditor extends React.Component {
         this.htmlEditor = React.createRef();
         this.cssEditor = React.createRef();
         this.jsEditor = React.createRef();
+        this.handleSave = this.handleSave.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.state = {
             valueHTML: "html",
             valueCSS: "CSS",
@@ -86,13 +88,14 @@ class CodeEditor extends React.Component {
     }
 
     onChange(value) {
-        if (this.name === "HTML_EDITOR") {
+        console.log(this.htmlEditor.current.editor.getValue());
+        /*if (this.name === "HTML_EDITOR") {
 
         } else if (this.name === "CSS_EDITOR") {
 
         } else if (this.name === "JS_EDITOR") {
 
-        }
+        }*/
     }
 
 
