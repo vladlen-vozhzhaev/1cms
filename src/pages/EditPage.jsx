@@ -26,7 +26,7 @@ class EditPage extends React.Component {n
         }).then(response => response.json());
     }
     render() {
-        return <CodeEditor getData={this.getPageData} url={host + "/savePage"}/>
+        return <CodeEditor getData={this.getPageData} url={host + "/editPage"}/>
     }
 
 

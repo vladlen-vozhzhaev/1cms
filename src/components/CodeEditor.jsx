@@ -14,7 +14,6 @@ class CodeEditor extends React.Component {
         this.cssEditor = React.createRef();
         this.jsEditor = React.createRef();
         this.handleSave = this.handleSave.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.state = {
             valueHTML: "html",
             valueCSS: "CSS",
@@ -59,45 +58,21 @@ class CodeEditor extends React.Component {
     }
 
     handleSave(e) {
-        //console.log(e.currentTarget.dataset.html)
-        /*let code_html = "Test_html";
-        let code_css = "Test_css";
-        let code_js = "Test_js";
-        let id = 6;*/
-        let code_html;
-        let code_css;
-        let code_js;
-        let id;
-        let saveBtn = e.currentTarget;
-        let url = saveBtn.dataset.url;
         let formData = new FormData();
-        formData.append("html", code_html);
-        formData.append("css", code_css);
-        formData.append("js", code_js);
-        formData.append("id", id);
-
-        fetch(url, {
+        formData.append("html", this.htmlEditor.current.editor.getValue());
+        formData.append("css", this.cssEditor.current.editor.getValue());
+        formData.append("js", this.jsEditor.current.editor.getValue());
+        formData.append("id", this.state.pageID);
+        fetch(this.props.url, {
             method: "POST",
             body: formData
         })
             .then(response => response.text())
             .then(function (result) {
                 alert(result);
-            } );
+            });
 
     }
-
-    onChange(value) {
-        console.log(this.htmlEditor.current.editor.getValue());
-        /*if (this.name === "HTML_EDITOR") {
-
-        } else if (this.name === "CSS_EDITOR") {
-
-        } else if (this.name === "JS_EDITOR") {
-
-        }*/
-    }
-
 
 
     render() {
@@ -111,7 +86,7 @@ class CodeEditor extends React.Component {
                        aria-controls="nav-profile" aria-selected="false"><i className="fab fa-css3"></i> CSS</a>
                     <a className="nav-item nav-link" id="pills-js-tab" data-toggle="tab" href="#nav-contact" role="tab"
                        aria-controls="nav-contact" aria-selected="false"><i className="fab fa-js"></i> JS</a>
-                    <button onClick={this.handleSave} className="btn btn-light ml-auto mr-3" data-url={this.props.url} data-html={this.state.valueHTML}>
+                    <button onClick={this.handleSave} className="btn btn-light ml-auto mr-3">
                         <i className="fas fa-save"></i></button>
                     <button onClick={this.expandEditor} className="btn btn-light" data-clicked="false"><i
                         className="fas fa-expand-arrows-alt"></i></button>
@@ -125,7 +100,6 @@ class CodeEditor extends React.Component {
                         width="100%"
                         name="HTML_EDITOR"
                         ref={this.htmlEditor}
-                        onChange={this.onChange}
                         setOptions={{
                             enableEmmet: true,
                             fontSize: 20,
@@ -138,7 +112,6 @@ class CodeEditor extends React.Component {
                         width="100%"
                         name="CSS_EDITOR"
                         ref={this.cssEditor}
-                        onChange={this.onChange}
                         setOptions={{
                             fontSize: 20,
 
@@ -151,7 +124,6 @@ class CodeEditor extends React.Component {
                         width="100%"
                         name="JS_EDITOR"
                         ref={this.jsEditor}
-                        onChange={this.onChange}
                         setOptions={{
                             fontSize: 20,
 
