@@ -20,7 +20,7 @@ class CodeEditor extends React.Component {
             valueHTML: "html",
             valueCSS: "CSS",
             valueJS: "JS",
-            inputsName:[],
+            inputsName: [],
             pageID: 0
         }
     }
@@ -28,11 +28,11 @@ class CodeEditor extends React.Component {
     componentDidMount() {
         let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements;
         let inputsName = new Array();
-        for (let input of formElements){
+        for (let input of formElements) {
             inputsName.push(input.name);
         }
         this.setState({
-            inputsName:inputsName
+            inputsName: inputsName
         })
         if (this.props.getData) {
             this.props.getData().then(res => {
@@ -40,8 +40,14 @@ class CodeEditor extends React.Component {
                     valueHTML: res.html,
                     valueCSS: res.css,
                     valueJS: res.js,
-                    pageID: res.id
+                    pageID: res.id,
+                    title: res.title,
+                    name: res.name
                 });
+
+                formElements.title.setAttribute("value", res.title);
+                formElements.name.setAttribute("value", res.name);
+
                 this.htmlEditor.current.editor.setValue(this.state.valueHTML);
                 this.cssEditor.current.editor.setValue(this.state.valueCSS);
                 this.jsEditor.current.editor.setValue(this.state.valueJS);
@@ -70,25 +76,32 @@ class CodeEditor extends React.Component {
 
     handleSave(e) {
         let formData = new FormData();
-        for (let key of this.state.inputsName){
-            console.log(key,this.state[key])
-            formData.append(key,this.state[key]);
+        for (let key of this.state.inputsName) {
+            //console.log(key,this.state[key])
+            formData.append(key, this.state[key]);
         }
         formData.append("html", this.htmlEditor.current.editor.getValue());
         formData.append("css", this.cssEditor.current.editor.getValue());
         formData.append("js", this.jsEditor.current.editor.getValue());
         formData.append("id", this.state.pageID);
-        fetch(this.props.url, {
-            method: "POST",
-            body: formData
-        })
-            .then(response => response.text())
-            .then(function (result) {
-                alert(result);
-            });
+
+        if (formData.get("name") == "" | formData.get("name") == "undefined") {
+            alert('Поле "Название" в разделе "Параметры" обязательно для заполнения!');
+        } else {
+            fetch(this.props.url, {
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.text())
+                .then(function (result) {
+                    alert(result);
+                });
+        }
+
 
     }
-    handleInputChange(e){
+
+    handleInputChange(e) {
         const target = e.target;
         const value = target.value;
         const name = target.name;
@@ -96,7 +109,6 @@ class CodeEditor extends React.Component {
         this.setState({
             [name]: value
         });
-        console.log(this.state);
     }
 
     render() {
@@ -110,8 +122,10 @@ class CodeEditor extends React.Component {
                        aria-controls="nav-profile" aria-selected="false"><i className="fab fa-css3"></i> CSS</a>
                     <a className="nav-item nav-link" id="pills-js-tab" data-toggle="tab" href="#nav-contact" role="tab"
                        aria-controls="nav-contact" aria-selected="false"><i className="fab fa-js"></i> JS</a>
-                    <a className="nav-item nav-link" id="pills-extraHTML-tab" data-toggle="tab" href="#nav-extraHTML" role="tab"
-                       aria-controls="nav-extraHTML" aria-selected="false"><i className="fas fa-tasks"></i> Параметры</a>
+                    <a className="nav-item nav-link" id="pills-extraHTML-tab" data-toggle="tab" href="#nav-extraHTML"
+                       role="tab"
+                       aria-controls="nav-extraHTML" aria-selected="false"><i
+                        className="fas fa-tasks"></i> Параметры</a>
                     <button onClick={this.handleSave} className="btn btn-light ml-auto mr-3">
                         <i className="fas fa-save"></i></button>
                     <button onClick={this.expandEditor} className="btn btn-light" data-clicked="false"><i
@@ -155,7 +169,8 @@ class CodeEditor extends React.Component {
 
                         }}/>
                 </div>
-                <div className="tab-pane fade pt-3" id="nav-extraHTML" role="tabpanel" aria-labelledby="nav-extraHTML-tab">
+                <div className="tab-pane fade pt-3" id="nav-extraHTML" role="tabpanel"
+                     aria-labelledby="nav-extraHTML-tab">
                     {<this.props.extraHTML handleChange={this.handleInputChange} ref={this.extraHTML}/>}
                 </div>
             </div>

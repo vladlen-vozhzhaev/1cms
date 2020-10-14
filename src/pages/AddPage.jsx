@@ -1,10 +1,11 @@
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
 
-class Form extends React.Component{
+class Form extends React.Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         return <form>
             <div className="form-group">
@@ -28,13 +29,13 @@ class Form extends React.Component{
     }
 }
 
-export class AddPage extends React.Component{
+export class AddPage extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        return <CodeEditor url={this.props.host+"/addPage"} extraHTML={Form}/>
+        return <CodeEditor url={this.props.host + "/addPage"} extraHTML={Form}/>
     }
 }
 

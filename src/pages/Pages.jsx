@@ -1,33 +1,30 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
-//let host = "http://dsergeev.beget.tech";
-let host = "http://1.vozhzhaev.ru";
-
-const Tr = (props)=>{
+const Tr = (props) => {
     return <tr>
         <th scope="row">{props.index}</th>
         <td>{props.title}</td>
         <td>/{props.name}</td>
-        <td><NavLink to={"editPage/"+props.name}>[Редактировать]</NavLink></td>
+        <td><NavLink to={"editPage/" + props.name}>[Редактировать]</NavLink></td>
     </tr>
 }
 
-class Pages extends React.Component{
+class Pages extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pages: "111"
+            pages: ""
         }
     }
 
     componentDidMount() {
 
-        fetch(host+"/getPagesJSON")
-            .then(response=>response.json())
-            .then(result=>{
+        fetch(this.props.host + "/getPagesJSON")
+            .then(response => response.json())
+            .then(result => {
                 let pages = result.map(
-                    (page,index)=><Tr key={index} index={index+1} title={page.title} name={page.name}/>
+                    (page, index) => <Tr key={index} index={index + 1} title={page.title} name={page.name}/>
                 );
                 this.setState({
                     pages: pages

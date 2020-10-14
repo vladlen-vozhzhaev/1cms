@@ -1,10 +1,14 @@
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
 
-class Form extends React.Component{
+//let host = "http://dsergeev.beget.tech";
+let host = "http://1.vozhzhaev.ru";
+
+class Form extends React.Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         return <form>
             <div className="form-group">
@@ -13,7 +17,6 @@ class Form extends React.Component{
                     className="form-control"
                     placeholder="Заголовок страницы"
                     name="title"
-                    value="То что пришло с сервера"
                     onChange={this.props.handleChange}
                 />
             </div>
@@ -29,7 +32,7 @@ class Form extends React.Component{
     }
 }
 
-class EditPage extends React.Component {n
+class EditPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -39,19 +42,21 @@ class EditPage extends React.Component {n
             valueJS: "JS"
         }
     }
+
     getPageData() {
         let path = window.location.pathname;
         let arrPath = path.split("/");
         let pageName = arrPath[arrPath.length - 1];
         let formData = new FormData();
         formData.append("name", pageName);
-        return fetch(this.props.host+"/getPage", {
+        return fetch(host + "/getPage", {
             method: "POST",
             body: formData
         }).then(response => response.json());
     }
+
     render() {
-        return <CodeEditor getData={this.getPageData} url={this.props.host + "/editPage"}/>
+        return <CodeEditor getData={this.getPageData} url={this.props.host + "/editPage"} extraHTML={Form}/>
     }
 
 
