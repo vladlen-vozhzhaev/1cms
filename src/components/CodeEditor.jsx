@@ -13,16 +13,27 @@ class CodeEditor extends React.Component {
         this.htmlEditor = React.createRef();
         this.cssEditor = React.createRef();
         this.jsEditor = React.createRef();
+        this.extraHTML = React.createRef();
         this.handleSave = this.handleSave.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.state = {
             valueHTML: "html",
             valueCSS: "CSS",
             valueJS: "JS",
+            inputsName:[],
             pageID: 0
         }
     }
 
     componentDidMount() {
+        let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements;
+        let inputsName = new Array();
+        for (let input of formElements){
+            inputsName.push(input.name);
+        }
+        this.setState({
+            inputsName:inputsName
+        })
         if (this.props.getData) {
             this.props.getData().then(res => {
                 this.setState({
@@ -59,6 +70,10 @@ class CodeEditor extends React.Component {
 
     handleSave(e) {
         let formData = new FormData();
+        for (let key of this.state.inputsName){
+            console.log(key,this.state[key])
+            formData.append(key,this.state[key]);
+        }
         formData.append("html", this.htmlEditor.current.editor.getValue());
         formData.append("css", this.cssEditor.current.editor.getValue());
         formData.append("js", this.jsEditor.current.editor.getValue());
@@ -73,7 +88,16 @@ class CodeEditor extends React.Component {
             });
 
     }
+    handleInputChange(e){
+        const target = e.target;
+        const value = target.value;
+        const name = target.name;
 
+        this.setState({
+            [name]: value
+        });
+        console.log(this.state);
+    }
 
     render() {
         return <div id="editorContainer">
@@ -86,6 +110,8 @@ class CodeEditor extends React.Component {
                        aria-controls="nav-profile" aria-selected="false"><i className="fab fa-css3"></i> CSS</a>
                     <a className="nav-item nav-link" id="pills-js-tab" data-toggle="tab" href="#nav-contact" role="tab"
                        aria-controls="nav-contact" aria-selected="false"><i className="fab fa-js"></i> JS</a>
+                    <a className="nav-item nav-link" id="pills-extraHTML-tab" data-toggle="tab" href="#nav-extraHTML" role="tab"
+                       aria-controls="nav-extraHTML" aria-selected="false"><i className="fas fa-tasks"></i> Параметры</a>
                     <button onClick={this.handleSave} className="btn btn-light ml-auto mr-3">
                         <i className="fas fa-save"></i></button>
                     <button onClick={this.expandEditor} className="btn btn-light" data-clicked="false"><i
@@ -128,6 +154,9 @@ class CodeEditor extends React.Component {
                             fontSize: 20,
 
                         }}/>
+                </div>
+                <div className="tab-pane fade pt-3" id="nav-extraHTML" role="tabpanel" aria-labelledby="nav-extraHTML-tab">
+                    {<this.props.extraHTML handleChange={this.handleInputChange} ref={this.extraHTML}/>}
                 </div>
             </div>
         </div>
