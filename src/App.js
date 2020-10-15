@@ -5,21 +5,19 @@ import {BrowserRouter, Route} from "react-router-dom";
 import Pages from "./pages/Pages";
 import EditPage from "./pages/EditPage";
 import {AddPage} from "./pages/AddPage";
+import {cmsName, host} from "./cmsConfig";
 
-//let host = "http://dsergeev.beget.tech";
-let host = "http://1.vozhzhaev.ru";
-
-function App() {
+function App(props) {
     return (
         <div className="container-fluid">
             <div className="row">
                 <BrowserRouter>
                     <Menu/>
                     <div className="col-sm-9">
-                        <Route exact path="/" render={() => "Hello world"}/>
-                        <Route exact path="/pages/" render={() => <Pages host={host}/>}/>
-                        <Route path="/pages/addPage" render={() => <AddPage host={host}/>}/>
-                        <Route path="/pages/editPage" render={() => <EditPage host={host}/>}/>
+                        <Route exact path={cmsName+"/"} render={() => "Hello world"}/>
+                        <Route exact path={cmsName+"/pages/"} render={() => <Pages host={host}/>}/>
+                        <Route path={cmsName+"/pages/addPage"} render={() => <AddPage host={host}/>}/>
+                        <Route path={cmsName+"/pages/editPage"} render={() => <EditPage host={host}/>}/>
                     </div>
                 </BrowserRouter>
             </div>

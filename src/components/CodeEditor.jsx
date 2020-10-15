@@ -21,11 +21,13 @@ class CodeEditor extends React.Component {
             valueCSS: "CSS",
             valueJS: "JS",
             inputsName: [],
-            pageID: 0
+            pageID: 0,
+            saveInfo: ""
         }
     }
 
     componentDidMount() {
+        this.htmlEditor.current.editor.focus();
         let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements;
         let inputsName = new Array();
         for (let input of formElements) {
@@ -51,6 +53,9 @@ class CodeEditor extends React.Component {
                 this.htmlEditor.current.editor.setValue(this.state.valueHTML);
                 this.cssEditor.current.editor.setValue(this.state.valueCSS);
                 this.jsEditor.current.editor.setValue(this.state.valueJS);
+                this.htmlEditor.current.editor.clearSelection();
+                this.cssEditor.current.editor.clearSelection();
+                this.jsEditor.current.editor.clearSelection();
             });
         }
 
@@ -97,8 +102,14 @@ class CodeEditor extends React.Component {
                 body: formData
             })
                 .then(response => response.text())
-                .then(function (result) {
-                    alert(result);
+                .then((result)=>{
+                    if(this.props.followAfterSave !== undefined){
+                        window.location.href = this.props.followAfterSave;
+                    }else{
+                        this.setState({
+                            saveInfo: "Сохранено: "+new Date()
+                        })
+                    }
                 });
         }
 
@@ -130,7 +141,8 @@ class CodeEditor extends React.Component {
                        role="tab"
                        aria-controls="nav-extraHTML" aria-selected="false"><i
                         className="fas fa-tasks"></i> Параметры</a>
-                    <button onClick={this.handleSave} className="btn btn-light ml-auto mr-3">
+                    <span className="ml-auto mr-3 mt-2">{this.state.saveInfo}</span>
+                    <button onClick={this.handleSave} className="btn btn-light mr-3">
                         <i className="fas fa-save"></i></button>
                     <button onClick={this.expandEditor} className="btn btn-light" data-clicked="false"><i
                         className="fas fa-expand-arrows-alt"></i></button>

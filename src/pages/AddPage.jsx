@@ -1,5 +1,6 @@
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
+import {cmsName} from "../cmsConfig";
 
 class Form extends React.Component {
     constructor(props) {
@@ -35,7 +36,6 @@ export class AddPage extends React.Component {
     }
 
     render() {
-        return <CodeEditor url={this.props.host + "/addPage"} extraHTML={Form}/>
+        return <CodeEditor url={this.props.host+"/addPage"} extraHTML={Form} followAfterSave={cmsName+"/pages/"}/>
     }
 }
-

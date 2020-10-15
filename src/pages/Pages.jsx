@@ -1,12 +1,13 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
+import {cmsName} from "../cmsConfig";
 
 const Tr = (props) => {
     return <tr>
         <th scope="row">{props.index}</th>
         <td>{props.title}</td>
         <td>/{props.name}</td>
-        <td><NavLink to={"editPage/" + props.name}>[Редактировать]</NavLink></td>
+        <td><NavLink to={cmsName+"/pages/editPage/" + props.name}>[Редактировать]</NavLink></td>
     </tr>
 }
 
@@ -35,12 +36,7 @@ class Pages extends React.Component {
 
     render() {
         return <div>
-            <ul className="nav nav-pills">
-                <li className="nav-item">
-                    <NavLink className="nav-link btn btn-primary" to="addPage">Добавить страницу</NavLink>
-                </li>
-            </ul>
-            <table className="table">
+            <table className="table table-striped">
                 <thead className="thead-dark">
                 <tr>
                     <th scope="col">#</th>
@@ -53,6 +49,7 @@ class Pages extends React.Component {
                 {this.state.pages}
                 </tbody>
             </table>
+            <NavLink className="btn btn-light" to={cmsName+"/pages/addPage"}><i className="fas fa-plus"></i> Добавить страницу</NavLink>
         </div>
 
     }
