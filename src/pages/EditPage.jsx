@@ -1,8 +1,8 @@
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
 
-//let host = "http://dsergeev.beget.tech";
-let host = "http://1.vozhzhaev.ru";
+let host = "http://dsergeev.beget.tech";
+//let host = "http://1.vozhzhaev.ru";
 
 class Form extends React.Component {
     constructor(props) {
