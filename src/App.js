@@ -6,8 +6,8 @@ import Pages from "./pages/Pages";
 import EditPage from "./pages/EditPage";
 import {AddPage} from "./pages/AddPage";
 
-let host = "http://dsergeev.beget.tech";
-//let host = "http://1.vozhzhaev.ru";
+//let host = "http://dsergeev.beget.tech";
+let host = "http://1.vozhzhaev.ru";
 
 function App() {
     return (
