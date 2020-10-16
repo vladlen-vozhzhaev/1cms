@@ -107,7 +107,7 @@ class CodeEditor extends React.Component {
                         window.location.href = this.props.followAfterSave;
                     }else{
                         this.setState({
-                            saveInfo: "Сохранено: "+new Date()
+                            saveInfo: "Сохранено: "+new Date().toLocaleString()
                         })
                     }
                 });
