@@ -5,7 +5,7 @@ import {BrowserRouter, Route} from "react-router-dom";
 import Pages from "./pages/Pages";
 import EditPage from "./pages/EditPage";
 import {AddPage} from "./pages/AddPage";
-import {cmsName, host} from "./cmsConfig";
+import {cmsName} from "./cmsConfig";
 
 function App(props) {
     return (
@@ -15,9 +15,9 @@ function App(props) {
                     <Menu/>
                     <div className="col-sm-9">
                         <Route exact path={cmsName+"/"} render={() => "Hello world"}/>
-                        <Route exact path={cmsName+"/pages/"} render={() => <Pages host={host}/>}/>
-                        <Route path={cmsName+"/pages/addPage"} render={() => <AddPage host={host}/>}/>
-                        <Route path={cmsName+"/pages/editPage"} render={() => <EditPage host={host}/>}/>
+                        <Route exact path={cmsName+"/pages/"} render={() => <Pages/>}/>
+                        <Route path={cmsName+"/pages/addPage"} render={() => <AddPage/>}/>
+                        <Route path={cmsName+"/pages/editPage"} render={() => <EditPage/>}/>
                     </div>
                 </BrowserRouter>
             </div>

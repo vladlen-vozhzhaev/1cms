@@ -1,8 +1,7 @@
 import React from "react";
 import CodeEditor from "../components/CodeEditor";
+import {host} from "../cmsConfig";
 
-//let host = "http://dsergeev.beget.tech";
-let host = "http://1.vozhzhaev.ru";
 
 class Form extends React.Component {
     constructor(props) {
@@ -32,7 +31,7 @@ class Form extends React.Component {
     }
 }
 
-class EditPage extends React.Component {
+export class EditPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -49,14 +48,14 @@ class EditPage extends React.Component {
         let pageName = arrPath[arrPath.length - 1];
         let formData = new FormData();
         formData.append("name", pageName);
-        return fetch(host + "/getPage", {
+        return fetch(host + "/getPageJSON", {
             method: "POST",
             body: formData
         }).then(response => response.json());
     }
 
     render() {
-        return <CodeEditor getData={this.getPageData} url={this.props.host + "/editPage"} extraHTML={Form}/>
+        return <CodeEditor getData={this.getPageData} url={host + "/editPage"} extraHTML={Form}/>
     }
 
 

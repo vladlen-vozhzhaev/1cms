@@ -91,7 +91,7 @@ class CodeEditor extends React.Component {
         formData.append("js", this.jsEditor.current.editor.getValue());
         formData.append("id", this.state.pageID);
 
-        if (formData.get("name") == "" | formData.get("name") == "undefined") {
+        if (formData.get("name") == "" | formData.get("name") == undefined) {
             alert('Поле "Название" в разделе "Параметры" обязательно для заполнения!');
             let tab = document.getElementById('pills-extraHTML-tab');
             tab.click();
