@@ -83,7 +83,6 @@ class CodeEditor extends React.Component {
         let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements;
         let formData = new FormData();
         for (let key of this.state.inputsName) {
-            //console.log(key,this.state[key])
             formData.append(key, this.state[key]);
         }
         formData.append("html", this.htmlEditor.current.editor.getValue());
@@ -91,7 +90,7 @@ class CodeEditor extends React.Component {
         formData.append("js", this.jsEditor.current.editor.getValue());
         formData.append("id", this.state.pageID);
 
-        if (formData.get("name") == "" | formData.get("name") == undefined) {
+        if (formData.get("name") == "" | formData.get("name") == "undefined") {
             alert('Поле "Название" в разделе "Параметры" обязательно для заполнения!');
             let tab = document.getElementById('pills-extraHTML-tab');
             tab.click();
