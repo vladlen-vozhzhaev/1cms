@@ -15,7 +15,7 @@ const Tr = (props) => {
 function delPage(e) {
     let pageName = e.currentTarget.dataset.name;
     console.log(e.currentTarget)
-    /*let formData = new FormData();
+    let formData = new FormData();
     formData.append("name", pageName);
     return fetch(host + "/delPage", {
         method: "POST",
@@ -23,7 +23,7 @@ function delPage(e) {
     }).then(response => response.text())
         .then((result) => {
             window.location.reload();
-        });*/
+        });
 }
 
 class Pages extends React.Component {
