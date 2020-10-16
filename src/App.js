@@ -14,7 +14,7 @@ function App(props) {
                 <BrowserRouter>
                     <Menu/>
                     <div className="col-sm-9">
-                        <Route exact path={cmsName+"/"} render={() => "Hello world"}/>
+                        <Route exact path={cmsName} render={() => "Hello world"}/>
                         <Route exact path={cmsName+"/pages/"} render={() => <Pages/>}/>
                         <Route path={cmsName+"/pages/addPage"} render={() => <AddPage/>}/>
                         <Route path={cmsName+"/pages/editPage"} render={() => <EditPage/>}/>

@@ -8,39 +8,42 @@ const Tr = (props) => {
         <td>{props.title}</td>
         <td>/{props.name}</td>
         <td><NavLink to={cmsName + "/pages/editPage/" + props.name}>[Редактировать]</NavLink></td>
-        <td><span className="btn btn-danger" onClick={delPage} data-name={props.name}>Удалить</span></td>
+        <td><span className="btn btn-danger" onClick={props.delPage} data-name={props.name}>Удалить</span></td>
     </tr>
 }
 
-function delPage(e) {
-    let pageName = e.currentTarget.dataset.name;
-    console.log(e.currentTarget)
-    let formData = new FormData();
-    formData.append("name", pageName);
-    return fetch(host + "/delPage", {
-        method: "POST",
-        body: formData
-    }).then(response => response.text())
-        .then((result) => {
-            window.location.reload();
-        });
-}
 
 class Pages extends React.Component {
     constructor(props) {
         super(props);
+        this.delPage = this.delPage.bind(this);
         this.state = {
             pages: ""
         }
     }
-
+    delPage(e) {
+        let pageName = e.currentTarget.dataset.name;
+        console.log(e.currentTarget)
+        let formData = new FormData();
+        formData.append("name", pageName);
+        return fetch(host + "/delPage", {
+            method: "POST",
+            body: formData
+        }).then(response => response.text())
+            .then((result) => {
+                this.fetchData()
+            });
+    }
     componentDidMount() {
+        this.fetchData()
+    }
 
+    fetchData(){
         fetch(host + "/getPagesJSON")
             .then(response => response.json())
             .then(result => {
                 let pages = result.map(
-                    (page, index) => <Tr key={index} index={index + 1} title={page.title} name={page.name}/>
+                    (page, index) => <Tr delPage={this.delPage} key={index} index={index + 1} title={page.title} name={page.name}/>
                 );
                 this.setState({
                     pages: pages
