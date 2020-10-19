@@ -41,6 +41,21 @@ export class AddPage extends React.Component {
         super(props);
     }
 
+    componentDidMount() {
+        let path = window.location.pathname;
+        let arrPath = path.split("/");
+        let pageName = arrPath[arrPath.length - 1];
+        if (pageName!="addPage") {
+            let name_rus = decodeURI(pageName);
+            let name = arrPath[arrPath.length - 2];
+            document.getElementsByName("name")[0].setAttribute("value", name);
+            document.getElementsByName("name")[0].setAttribute("disabled", true);
+            document.getElementsByName("title")[0].setAttribute("value", name_rus);
+            document.getElementsByName("title")[0].setAttribute("disabled", true);
+            document.getElementById('pills-extraHTML-tab').click();
+        }
+    }
+
     render() {
         return <CodeEditor url={host+"/addPage"} extraHTML={Form} followAfterSave={cmsName+"/pages/"}/>
     }

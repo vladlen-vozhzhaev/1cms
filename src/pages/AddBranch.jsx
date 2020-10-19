@@ -1,5 +1,6 @@
 import React from "react";
 import {cmsName, host} from "../cmsConfig";
+import {AddPage} from "./AddPage";
 
 class AddBranch extends React.Component {
     constructor(props) {
@@ -29,7 +30,8 @@ class AddBranch extends React.Component {
             })
                 .then(response => response.text())
                 .then((result) => {
-                    window.location.href = cmsName+"/branches/";
+                    //window.location.href = cmsName+"/branches/";
+                    window.location.href = cmsName+"/pages/addPage/"+name+"/"+name_rus;
                 })
         }
 
