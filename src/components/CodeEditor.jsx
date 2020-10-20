@@ -30,12 +30,17 @@ class CodeEditor extends React.Component {
         this.htmlEditor.current.editor.focus();
         let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements;
         let inputsName = new Array();
-        for (let input of formElements) {
-            inputsName.push(input.name);
+        for (let i=0; i<formElements.length; i++) {
+            inputsName.push(formElements[i].name)
+            this.setState({
+               [formElements[i].name]:formElements[i].dataset.value
+            });
+
         }
         this.setState({
             inputsName: inputsName
         })
+
         if (this.props.getData) {
             this.props.getData().then(res => {
                 this.setState({
@@ -103,7 +108,7 @@ class CodeEditor extends React.Component {
                 .then(response => response.text())
                 .then((result)=>{
                     if(this.props.followAfterSave !== undefined){
-                        window.location.href = this.props.followAfterSave;
+                        //window.location.href = this.props.followAfterSave;
                     }else{
                         this.setState({
                             saveInfo: "Сохранено: "+new Date().toLocaleString()
@@ -111,12 +116,10 @@ class CodeEditor extends React.Component {
                     }
                 });
         }
-
-
     }
 
-    handleInputChange(e) {
-        const target = e.target;
+    handleInputChange(event) {
+        const target = event.target;
         const value = target.value;
         const name = target.name;
 

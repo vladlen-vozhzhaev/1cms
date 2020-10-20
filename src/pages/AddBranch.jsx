@@ -1,37 +1,15 @@
 import React from "react";
 import {cmsName, host} from "../cmsConfig";
 import {AddPage} from "./AddPage";
+import {Redirect} from "react-router-dom";
 
-const AddBranchForm = (props)=>{
-    return <div>
-        <button onClick={props.handleSave} className="btn btn-light mr-3"><i className="fas fa-save"></i></button>
-        <form>
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Название ветки [ENG]"
-                    name="name"
-                />
-            </div>
-            <div className="form-group">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Название ветки на русском языке"
-                    name="name_rus"
-                />
-            </div>
-        </form>
-    </div>
-}
 
 class AddBranch extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSave = this.handleSave.bind(this)
+        this.handleSave = this.handleSave.bind(this);
         this.state = {
-            ViewComponent: AddBranchForm
+            referrer: null,
         }
     }
 
@@ -55,9 +33,10 @@ class AddBranch extends React.Component {
             })
                 .then(response => response.text())
                 .then((result) => {
-                    console.log(this);
+                    localStorage.setItem("name",name);
+                    localStorage.setItem("name_rus",name_rus);
                     this.setState({
-                        ViewComponent: AddPage
+                        referrer: cmsName+"/pages/addPage"
                     })
                 })
         }
@@ -65,9 +44,29 @@ class AddBranch extends React.Component {
     }
 
     render() {
+        const {referrer} = this.state;
+        if (referrer) return <Redirect to={referrer} />
         return (
             <div>
-                <this.state.ViewComponent handleSave={this.handleSave} />
+                <button onClick={this.handleSave} className="btn btn-light mr-3"><i className="fas fa-save"></i></button>
+                <form>
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Название ветки [ENG]"
+                            name="name"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Название ветки на русском языке"
+                            name="name_rus"
+                        />
+                    </div>
+                </form>
             </div>
         )
     }
