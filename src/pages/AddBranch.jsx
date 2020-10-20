@@ -45,7 +45,7 @@ class AddBranch extends React.Component {
 
     render() {
         const {referrer} = this.state;
-        if (referrer) return <Redirect to={referrer} />
+        if (referrer) return <Redirect to={referrer} followAfterSave={cmsName+"/pages/"}/>
         return (
             <div>
                 <button onClick={this.handleSave} className="btn btn-light mr-3"><i className="fas fa-save"></i></button>

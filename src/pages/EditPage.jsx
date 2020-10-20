@@ -27,6 +27,13 @@ class Form extends React.Component {
                     name="name"
                     onChange={this.props.handleChange}/>
             </div>
+            <div className="form-group">
+                <select className="form-control" name="branch" onChange={this.props.handleChange}>
+                    <option value="1" data-value="1">Главная</option>
+                    <option value="2" data-value="2">Курс</option>
+                    <option value="4" data-value="4">Тестовая ветка</option>
+                </select>
+            </div>
         </form>
     }
 }

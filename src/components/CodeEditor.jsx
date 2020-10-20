@@ -6,73 +6,80 @@ import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/mode-javascript";
 import "emmet-core"
 import "ace-builds/src-noconflict/ext-emmet";
+import {Redirect} from "react-router-dom";
+import {cmsName} from "../cmsConfig";
 
 class CodeEditor extends React.Component {
     constructor(props) {
         super(props);
-        this.htmlEditor = React.createRef();
-        this.cssEditor = React.createRef();
-        this.jsEditor = React.createRef();
-        this.extraHTML = React.createRef();
-        this.handleSave = this.handleSave.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.state = {
+        this.htmlEditor = React.createRef();    // Реф на HTMLeditor
+        this.cssEditor = React.createRef(); // Реф на CSSeditor
+        this.jsEditor = React.createRef();  // Реф на JSeditor
+        this.extraHTML = React.createRef(); // Реф на форму из AddPage или EditPage
+        this.handleSave = this.handleSave.bind(this); // передача this в handleSave
+        this.handleInputChange = this.handleInputChange.bind(this); // передача this в handleInputChange
+        this.state = {  //Первичное присвоение state
             valueHTML: "html",
             valueCSS: "CSS",
             valueJS: "JS",
             inputsName: [],
             pageID: 0,
-            saveInfo: ""
+            saveInfo: "",
+            referrer: null
         }
     }
 
-    componentDidMount() {
-        this.htmlEditor.current.editor.focus();
-        let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements;
-        let inputsName = new Array();
-        for (let i=0; i<formElements.length; i++) {
-            inputsName.push(formElements[i].name)
+    componentDidMount() { // После завершения render
+        this.htmlEditor.current.editor.focus(); // Передать фокус на HTML editor
+        let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements; // Получение элементов формы из AddPage
+        let inputsName = new Array(); // создание массива полей ввода формы из AddPage
+        for (let i=0; i<formElements.length; i++) { //Перебор элементов формы из AddPage
+            inputsName.push(formElements[i].name) // добавить в массив элемент с именем name i-го элемента из формы - например title
             this.setState({
-               [formElements[i].name]:formElements[i].dataset.value
+               [formElements[i].name]:formElements[i].dataset.value // присвоить в state i-му элементу из формы значение data-value i-го элемента из формы (title:"Тестовая страница")
             });
-
+            formElements[i].setAttribute("value",formElements[i].dataset.value) // вывод в поле ввода значения из data-value
         }
         this.setState({
-            inputsName: inputsName
+            inputsName: inputsName // присвоить inputsName из state значение в виде массива inputsName
         })
 
-        if (this.props.getData) {
-            this.props.getData().then(res => {
-                this.setState({
+        if (this.props.getData) { // получение функции getPageData из props (есть только при вызове из EditPage)
+            this.props.getData().then(res => { //разбор JSON из response полученного в ответ на getPageJSON
+                this.setState({ // Присвоение state значений из response полученного в ответ на getPageJSON
                     valueHTML: res.html,
                     valueCSS: res.css,
                     valueJS: res.js,
                     pageID: res.id,
                     title: res.title,
-                    name: res.name
+                    name: res.name,
+                    branch:res.branch
                 });
 
-                formElements.title.setAttribute("value", res.title);
-                formElements.name.setAttribute("value", res.name);
+                console.log(formElements.branch);
 
-                this.htmlEditor.current.editor.setValue(this.state.valueHTML);
-                this.cssEditor.current.editor.setValue(this.state.valueCSS);
-                this.jsEditor.current.editor.setValue(this.state.valueJS);
-                this.htmlEditor.current.editor.clearSelection();
-                this.cssEditor.current.editor.clearSelection();
-                this.jsEditor.current.editor.clearSelection();
+                formElements.title.setAttribute("value", res.title); // вывод в поле ввода title значения из response полученного в ответ на getPageJSON
+                formElements.name.setAttribute("value", res.name); // вывод в поле ввода name значения из response полученного в ответ на getPageJSON
+                formElements.branch.setAttribute("value", res.branch); // вывод в поле ввода branch значения из response полученного в ответ на getPageJSON
+
+                this.htmlEditor.current.editor.setValue(this.state.valueHTML); // передача в HTMLEditor значения из response полученного в ответ на getPageJSON
+                this.cssEditor.current.editor.setValue(this.state.valueCSS);    // передача в CSSEditor значения из response полученного в ответ на getPageJSON
+                this.jsEditor.current.editor.setValue(this.state.valueJS);  // передача в JSEditor значения из response полученного в ответ на getPageJSON
+                this.htmlEditor.current.editor.clearSelection(); // удаление выделения в HTMLEditor
+                this.cssEditor.current.editor.clearSelection(); // удаление выделения в CSSEditor
+                this.jsEditor.current.editor.clearSelection();  // удаление выделения в JSEditor
             });
         }
 
     }
 
     expandEditor(e) {
-        let editorContainer = document.getElementById("editorContainer");
-        let expandBtn = e.currentTarget;
+        let editorContainer = document.getElementById("editorContainer"); //Получение из HTML-документа элемента с ID "editorContainer"
+        let expandBtn = e.currentTarget; // expandBtn - кнопка изменения размера окна редактора
         let clicked = expandBtn.dataset.clicked === "true";
-        let aceEditors = document.querySelectorAll(".ace_editor");
-        let navEditor = document.getElementById("navEditor");
-        for (let aceEditor of aceEditors) {
+        let aceEditors = document.querySelectorAll(".ace_editor"); // выбрать все элементы AceEditor
+        let navEditor = document.getElementById("navEditor"); // выбрать верхнее меню редактора
+        for (let aceEditor of aceEditors) { // перебор всех элементов AceEditor
             editorContainer.style.height = clicked ? "500px" : "100vh";
             aceEditor.style.height = clicked ? "500px" : (editorContainer.getBoundingClientRect().height - navEditor.getBoundingClientRect().height) + "px";
         }
@@ -85,22 +92,21 @@ class CodeEditor extends React.Component {
     }
 
     handleSave(e) {
-        let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements;
-        let formData = new FormData();
-        for (let key of this.state.inputsName) {
-            formData.append(key, this.state[key]);
+        let formElements = this.extraHTML.current._reactInternalFiber.child.stateNode.elements; // Получение элементов формы из AddPage
+        let formData = new FormData(); // создание FormData
+        for (let key of this.state.inputsName) { //Перебор inputsName state (содержат имена полей и значения элементов формы из AddPage)
+            formData.append(key, this.state[key]); // добавление в FormData полей со значениями, полученными из элементов формы из AddPage (например "name" со значением "Page_1")
         }
-        formData.append("html", this.htmlEditor.current.editor.getValue());
-        formData.append("css", this.cssEditor.current.editor.getValue());
-        formData.append("js", this.jsEditor.current.editor.getValue());
-        formData.append("id", this.state.pageID);
+        formData.append("html", this.htmlEditor.current.editor.getValue()); // добавление в FormData поля со значениями, полученными из HTMLeditor
+        formData.append("css", this.cssEditor.current.editor.getValue());   // добавление в FormData поля со значениями, полученными из CSSeditor
+        formData.append("js", this.jsEditor.current.editor.getValue()); // добавление в FormData поля со значениями, полученными из JSeditor
+        formData.append("id", this.state.pageID); // добавление в FormData поля со значением ID полученными из state
 
         if (formData.get("name") == "" | formData.get("name") == "undefined") {
-            alert('Поле "Название" в разделе "Параметры" обязательно для заполнения!');
-            let tab = document.getElementById('pills-extraHTML-tab');
-            tab.click();
-            formElements.name.focus();
-        } else {
+            alert('Поле "Название" в разделе "Параметры" обязательно для заполнения!'); // если значение name пустое или undefined - тогда вывести передупреждение
+            document.getElementById('pills-extraHTML-tab').click(); // Перейти на вкладу "Параметры"
+            formElements.name.focus(); // передать фокус ввода в поле name
+        } else { //  если значение name не пустое или не undefined, тогда передать на сервер запрос /addPage или /editPage - в зависимости от того, откуда был вызван CodeEditor
             fetch(this.props.url, {
                 method: "POST",
                 body: formData
@@ -108,6 +114,9 @@ class CodeEditor extends React.Component {
                 .then(response => response.text())
                 .then((result)=>{
                     if(this.props.followAfterSave !== undefined){
+                        this.setState({
+                            referrer: this.props.followAfterSave
+                        });
                         //window.location.href = this.props.followAfterSave;
                     }else{
                         this.setState({
@@ -119,16 +128,18 @@ class CodeEditor extends React.Component {
     }
 
     handleInputChange(event) {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
+        const target = event.target; // назначить источник события (поле ввода из формы из AddPage или EditPage)
+        const value = target.value; // прочитать из поля ввода значение и присвоить его переменной value
+        const name = target.name; // прочитать из поля ввода его имя и присвоить его переменной name
 
         this.setState({
-            [name]: value
+            [name]: value // изменить у элемента state c именем name значение на взятое из переменной value (например title:"Тестовая страница")
         });
     }
 
     render() {
+        const {referrer} = this.state;
+        if (referrer) return <Redirect to={referrer} />
         return <div id="editorContainer">
             <nav id="navEditor">
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
@@ -143,11 +154,11 @@ class CodeEditor extends React.Component {
                        role="tab"
                        aria-controls="nav-extraHTML" aria-selected="false"><i
                         className="fas fa-tasks"></i> Параметры</a>
-                    <span className="ml-auto mr-3 mt-2">{this.state.saveInfo}</span>
+                    <span className="ml-auto mr-3 mt-2">{this.state.saveInfo}</span> {/* Строка вывода сообщения о результатах сохранения */}
                     <button onClick={this.handleSave} className="btn btn-light mr-3">
-                        <i className="fas fa-save"></i></button>
+                        <i className="fas fa-save"></i></button> {/* Кнопка сохранения */}
                     <button onClick={this.expandEditor} className="btn btn-light" data-clicked="false"><i
-                        className="fas fa-expand-arrows-alt"></i></button>
+                        className="fas fa-expand-arrows-alt"></i></button> {/* Кнопка развертывания/свертывания окна редактора */}
                 </div>
             </nav>
             <div className="tab-content" id="nav-tabContent">
@@ -157,7 +168,7 @@ class CodeEditor extends React.Component {
                         theme="vibrant_ink"
                         width="100%"
                         name="HTML_EDITOR"
-                        ref={this.htmlEditor}
+                        ref={this.htmlEditor} //присвоение рефа htmlEditor
                         setOptions={{
                             enableEmmet: true,
                             fontSize: 20,
@@ -169,7 +180,7 @@ class CodeEditor extends React.Component {
                         theme="vibrant_ink"
                         width="100%"
                         name="CSS_EDITOR"
-                        ref={this.cssEditor}
+                        ref={this.cssEditor} //присвоение рефа cssEditor
                         setOptions={{
                             fontSize: 20,
 
@@ -181,7 +192,7 @@ class CodeEditor extends React.Component {
                         theme="vibrant_ink"
                         width="100%"
                         name="JS_EDITOR"
-                        ref={this.jsEditor}
+                        ref={this.jsEditor} // присвоение рефа jsEditor
                         setOptions={{
                             fontSize: 20,
 
@@ -189,7 +200,7 @@ class CodeEditor extends React.Component {
                 </div>
                 <div className="tab-pane fade pt-3" id="nav-extraHTML" role="tabpanel"
                      aria-labelledby="nav-extraHTML-tab">
-                    {<this.props.extraHTML handleChange={this.handleInputChange} ref={this.extraHTML}/>}
+                    {<this.props.extraHTML handleChange={this.handleInputChange} ref={this.extraHTML}/>} {/*вывод формы из AddPage или EditPage */}
                 </div>
             </div>
         </div>
