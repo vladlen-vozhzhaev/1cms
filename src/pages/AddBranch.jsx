@@ -2,11 +2,36 @@ import React from "react";
 import {cmsName, host} from "../cmsConfig";
 import {AddPage} from "./AddPage";
 
+const AddBranchForm = (props)=>{
+    return <div>
+        <button onClick={props.handleSave} className="btn btn-light mr-3"><i className="fas fa-save"></i></button>
+        <form>
+            <div className="form-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Название ветки [ENG]"
+                    name="name"
+                />
+            </div>
+            <div className="form-group">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Название ветки на русском языке"
+                    name="name_rus"
+                />
+            </div>
+        </form>
+    </div>
+}
+
 class AddBranch extends React.Component {
     constructor(props) {
         super(props);
+        this.handleSave = this.handleSave.bind(this)
         this.state = {
-
+            ViewComponent: AddBranchForm
         }
     }
 
@@ -30,8 +55,10 @@ class AddBranch extends React.Component {
             })
                 .then(response => response.text())
                 .then((result) => {
-                    //window.location.href = cmsName+"/branches/";
-                    window.location.href = cmsName+"/pages/addPage/"+name+"/"+name_rus;
+                    console.log(this);
+                    this.setState({
+                        ViewComponent: AddPage
+                    })
                 })
         }
 
@@ -40,25 +67,7 @@ class AddBranch extends React.Component {
     render() {
         return (
             <div>
-                <button onClick={this.handleSave} className="btn btn-light mr-3"><i className="fas fa-save"></i></button>
-                <form>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Название ветки [ENG]"
-                            name="name"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Название ветки на русском языке"
-                            name="name_rus"
-                            />
-                    </div>
-                </form>
+                <this.state.ViewComponent handleSave={this.handleSave} />
             </div>
         )
     }
