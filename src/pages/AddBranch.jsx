@@ -1,6 +1,5 @@
 import React from "react";
 import {cmsName, host} from "../cmsConfig";
-import {AddPage} from "./AddPage";
 import {Redirect} from "react-router-dom";
 
 
