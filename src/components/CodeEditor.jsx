@@ -7,7 +7,8 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "emmet-core"
 import "ace-builds/src-noconflict/ext-emmet";
 import {Redirect} from "react-router-dom";
-import {cmsName} from "../cmsConfig";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 
 class CodeEditor extends React.Component {
     constructor(props) {
@@ -16,9 +17,13 @@ class CodeEditor extends React.Component {
         this.cssEditor = React.createRef(); // Реф на CSSeditor
         this.jsEditor = React.createRef();  // Реф на JSeditor
         this.extraHTML = React.createRef(); // Реф на форму из AddPage или EditPage
+        this.wyswigEditor = React.createRef();
         this.handleSave = this.handleSave.bind(this); // передача this в handleSave
         this.handleInputChange = this.handleInputChange.bind(this); // передача this в handleInputChange
+        this.handleCodeChange = this.handleCodeChange.bind(this);
+        this.reRenderCodeEditor = this.reRenderCodeEditor.bind(this);
         this.state = {  //Первичное присвоение state
+            wyswigValue: "",
             valueHTML: "html",
             valueCSS: "CSS",
             valueJS: "JS",
@@ -102,6 +107,7 @@ class CodeEditor extends React.Component {
         for (let key of this.state.inputsName) { //Перебор inputsName state (содержат имена полей и значения элементов формы из AddPage)
             formData.append(key, this.state[key]); // добавление в FormData полей со значениями, полученными из элементов формы из AddPage (например "name" со значением "Page_1")
         }
+        this.htmlEditor.current.editor.setValue(this.state.wyswigValue);
         formData.append("html", this.htmlEditor.current.editor.getValue()); // добавление в FormData поля со значениями, полученными из HTMLeditor
         formData.append("css", this.cssEditor.current.editor.getValue());   // добавление в FormData поля со значениями, полученными из CSSeditor
         formData.append("js", this.jsEditor.current.editor.getValue()); // добавление в FormData поля со значениями, полученными из JSeditor
@@ -142,19 +148,30 @@ class CodeEditor extends React.Component {
         });
     }
 
+    handleCodeChange(value){
+        this.setState({
+            wyswigValue: value
+        })
+    }
+
+    reRenderCodeEditor(){
+        this.htmlEditor.current.editor.setValue(this.state.wyswigValue);
+    }
+
     render() {
         const {referrer} = this.state;
         if (referrer) return <Redirect to={referrer} />
         return <div id="editorContainer">
             <nav id="navEditor">
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a className="nav-item nav-link active" id="pills-html-tab" data-toggle="tab" href="#nav-home"
-                       role="tab"
+                    <a onClick={this.reRenderCodeEditor} className="nav-item nav-link active" id="pills-html-tab" data-toggle="tab" href="#nav-home" role="tab"
                        aria-controls="nav-home" aria-selected="true"><i className="fab fa-html5"></i> HTML</a>
                     <a className="nav-item nav-link" id="pills-css-tab" data-toggle="tab" href="#nav-profile" role="tab"
                        aria-controls="nav-profile" aria-selected="false"><i className="fab fa-css3"></i> CSS</a>
                     <a className="nav-item nav-link" id="pills-js-tab" data-toggle="tab" href="#nav-contact" role="tab"
                        aria-controls="nav-contact" aria-selected="false"><i className="fab fa-js"></i> JS</a>
+                    <a className="nav-item nav-link" id="pills-wyswig-tab" data-toggle="tab" href="#nav-wyswig" role="tab"
+                       aria-controls="nav-wyswig" aria-selected="false"><i className="fas fa-eye"></i> WYSWIG</a>
                     <a className="nav-item nav-link" id="pills-extraHTML-tab" data-toggle="tab" href="#nav-extraHTML"
                        role="tab"
                        aria-controls="nav-extraHTML" aria-selected="false"><i
@@ -174,6 +191,7 @@ class CodeEditor extends React.Component {
                         width="100%"
                         name="HTML_EDITOR"
                         ref={this.htmlEditor} //присвоение рефа htmlEditor
+                        onChange={this.handleCodeChange}
                         setOptions={{
                             enableEmmet: true,
                             fontSize: 20,
@@ -202,6 +220,14 @@ class CodeEditor extends React.Component {
                             fontSize: 20,
 
                         }}/>
+                </div>
+                <div className="tab-pane fade" id="nav-wyswig" role="tabpanel" aria-labelledby="nav-wyswig-tab">
+                    <ReactQuill
+                        value={this.state.wyswigValue}
+                        onChange={(value)=>{
+                            this.setState({wyswigValue:value})
+                        }}
+                        ref={this.wyswigEditor}/>
                 </div>
                 <div className="tab-pane fade pt-3" id="nav-extraHTML" role="tabpanel"
                      aria-labelledby="nav-extraHTML-tab">

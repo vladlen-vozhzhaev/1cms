@@ -6,8 +6,8 @@ const Tr = (props) => {
     return <tr>
         <th scope="row">{props.index}</th>
         <td>{props.title}</td>
-        <td>/{props.name}</td>
-        <td><NavLink className="btn btn-secondary btn-sm" to={cmsName + "/pages/editPage/" + props.name}><i className="fas fa-edit pr-2"></i>Редактировать</NavLink></td>
+        <td>{props.name}</td>
+        <td><NavLink className="btn btn-secondary btn-sm" to={cmsName + "/pages/editPage/" + props.pageId}><i className="fas fa-edit pr-2"></i>Редактировать</NavLink></td>
         <td><span className="btn btn-danger btn-sm" onClick={props.delPage} data-name={props.name}><i className="fas fa-trash-alt pr-2"></i>Удалить</span></td>
     </tr>
 }
@@ -44,7 +44,7 @@ class Pages extends React.Component {
             .then(response => response.json())
             .then(result => {
                 let pages = result.map(
-                    (page, index) => <Tr delPage={this.delPage} key={index} index={index + 1} title={page.title} name={page.name}/>
+                    (page, index) => <Tr pageId={page.id} delPage={this.delPage} key={index} index={index + 1} title={page.title} name={page.branch_name!=""?"/"+page.branch_name+"/"+page.name:"/"+page.name}/>
                 );
                 this.setState({
                     pages: pages

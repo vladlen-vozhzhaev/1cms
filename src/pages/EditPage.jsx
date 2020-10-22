@@ -68,8 +68,8 @@ class EditPage extends React.Component {
         let arrPath = path.split("/");
         let pageName = arrPath[arrPath.length - 1];
         let formData = new FormData();
-        formData.append("name", pageName);
-        return fetch(host + "/getPageJSON", {
+        formData.append("pageId", pageName);
+        return fetch(host + "/getPageByIdJSON", {
             method: "POST",
             body: formData
         }).then(response => response.json());
