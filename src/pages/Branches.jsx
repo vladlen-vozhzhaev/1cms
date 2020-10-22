@@ -23,7 +23,6 @@ class Branches extends React.Component {
 
     delBranch(e) {
         let pageName = e.currentTarget.dataset.name;
-        console.log(e.currentTarget)
         let formData = new FormData();
         formData.append("name", pageName);
         return fetch(host + "/delBranch", {

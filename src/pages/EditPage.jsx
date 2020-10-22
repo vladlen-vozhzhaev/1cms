@@ -52,7 +52,7 @@ class Form extends React.Component {
     }
 }
 
-export class EditPage extends React.Component {
+class EditPage extends React.Component {
 
     constructor(props) {
         super(props);

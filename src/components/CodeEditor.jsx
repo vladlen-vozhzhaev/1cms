@@ -56,11 +56,16 @@ class CodeEditor extends React.Component {
                     branch:res.branch
                 });
 
-                console.log(formElements.branch);
 
                 formElements.title.setAttribute("value", res.title); // вывод в поле ввода title значения из response полученного в ответ на getPageJSON
                 formElements.name.setAttribute("value", res.name); // вывод в поле ввода name значения из response полученного в ответ на getPageJSON
                 formElements.branch.setAttribute("value", res.branch); // вывод в поле ввода branch значения из response полученного в ответ на getPageJSON
+                let options = formElements.branch.getElementsByTagName('option');
+                for (let option of options){
+                    if (option.value==res.branch) {
+                        option.setAttribute("selected", true);
+                    }
+                }
 
                 this.htmlEditor.current.editor.setValue(this.state.valueHTML); // передача в HTMLEditor значения из response полученного в ответ на getPageJSON
                 this.cssEditor.current.editor.setValue(this.state.valueCSS);    // передача в CSSEditor значения из response полученного в ответ на getPageJSON
