@@ -107,7 +107,7 @@ class CodeEditor extends React.Component {
         for (let key of this.state.inputsName) { //Перебор inputsName state (содержат имена полей и значения элементов формы из AddPage)
             formData.append(key, this.state[key]); // добавление в FormData полей со значениями, полученными из элементов формы из AddPage (например "name" со значением "Page_1")
         }
-        this.htmlEditor.current.editor.setValue(this.state.wyswigValue);
+        //this.htmlEditor.current.editor.setValue(this.state.wyswigValue);
         formData.append("html", this.htmlEditor.current.editor.getValue()); // добавление в FormData поля со значениями, полученными из HTMLeditor
         formData.append("css", this.cssEditor.current.editor.getValue());   // добавление в FormData поля со значениями, полученными из CSSeditor
         formData.append("js", this.jsEditor.current.editor.getValue()); // добавление в FormData поля со значениями, полученными из JSeditor
@@ -128,7 +128,7 @@ class CodeEditor extends React.Component {
                         this.setState({
                             referrer: this.props.followAfterSave
                         });
-                        //window.location.href = this.props.followAfterSave;
+                        //nn = this.props.followAfterSave;
                     }else{
                         this.setState({
                             saveInfo: "Сохранено: "+new Date().toLocaleString()
@@ -155,7 +155,7 @@ class CodeEditor extends React.Component {
     }
 
     reRenderCodeEditor(){
-        this.htmlEditor.current.editor.setValue(this.state.wyswigValue);
+        //this.htmlEditor.current.editor.setValue(this.state.wyswigValue);
     }
 
     render() {

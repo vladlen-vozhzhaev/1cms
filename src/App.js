@@ -9,6 +9,7 @@ import {AddPage} from "./pages/AddPage";
 import AddBranch from "./pages/AddBranch";
 import EditBranch from "./pages/EditBranch";
 import {cmsName} from "./cmsConfig";
+import Exit from "./pages/Exit";
 
 
 function App(props) {
@@ -25,6 +26,7 @@ function App(props) {
                         <Route path={cmsName+"/branches/editBranch"} render={() => <EditBranch/>}/>
                         <Route path={cmsName+"/pages/addPage"} render={() => <AddPage/>}/>
                         <Route path={cmsName+"/pages/editPage"} render={() => <EditPage/>}/>
+                        <Route path={cmsName+"/exit"} render={() => <Exit/>}/>
                     </div>
                 </BrowserRouter>
             </div>
